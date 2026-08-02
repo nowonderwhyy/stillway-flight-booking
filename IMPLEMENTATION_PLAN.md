@@ -1,6 +1,6 @@
 # Stillway Flight Booking Application — Implementation Plan
 
-> Status: Implementation complete; final video remains a student-owned submission step  
+> Status: Implementation complete; final video remains a student-owned submission step
 > Product: Stillway — “Travel at your rhythm.”  
 > Working directory: `<Desktop>\stillway-flight-booking`
 
