@@ -32,6 +32,17 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# local SQLite runtime files
+/data/*.db
+/data/*.db-*
+/data/*.sqlite
+/data/*.sqlite-*
+
+# browser-test artifacts (curated screenshots live in /docs/screenshots)
+/playwright-report/
+/test-results/
 
 # vercel
 .vercel
