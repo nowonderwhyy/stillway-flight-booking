@@ -2,7 +2,7 @@
 
 > Status: Active  
 > Product: Stillway — “Travel at your rhythm.”  
-> Working directory: `C:\Users\paulk\Desktop\stillway-flight-booking`
+> Working directory: `<Desktop>\stillway-flight-booking`
 
 ## Purpose and evidence strategy
 
@@ -58,76 +58,76 @@ The following changes were made during review rather than accepting the baseline
 - [x] Create the active project goal.
 - [x] Scaffold the Next.js repository.
 - [x] Create the durable implementation plan and prompt log.
-- [ ] Create and push the public GitHub repository.
+- [x] Create and push the public GitHub repository.
 
-Exit evidence: pending first public push.
+Exit evidence: public repository created at `https://github.com/nowonderwhyy/stillway-flight-booking` from commit `97fe882`.
 
 ### Phase 1 — Product and visual foundation
 
-- [ ] Lock the design tokens, content hierarchy, responsive layout, and trust language.
-- [ ] Generate one original cinematic hero image and a coordinated destination set.
-- [ ] Record the happy path and responsive behavior before feature coding.
+- [x] Lock the design tokens, content hierarchy, responsive layout, and trust language.
+- [x] Generate one original cinematic hero image and a coordinated destination set.
+- [x] Record the happy path and responsive behavior before feature coding.
 
-Exit evidence: pending.
+Exit evidence: `docs/PRODUCT_DESIGN.md` plus seven optimized original WebP assets under `public/images/`.
 
 ### Phase 2 — Scaffold, database, and seeded inventory
 
-- [ ] Install and configure application dependencies.
-- [ ] Add the Prisma SQLite schema and committed migrations.
-- [ ] Add idempotent future-dated seed generation with at least 20 available flights.
-- [ ] Add `db:setup`, `db:reset`, and `db:verify` commands.
+- [x] Install and configure application dependencies.
+- [x] Add the Prisma SQLite schema and committed migrations.
+- [x] Add idempotent future-dated seed generation with at least 20 available flights.
+- [x] Add `db:setup`, `db:reset`, and `db:verify` commands.
 
-Exit evidence: pending.
+Exit evidence: a clean migration and seed created 6 airports, 20 flight instances, and 10 directional routes. `npm run db:verify` prints the resolved path, schema status, inventory, routes, bookings, and earliest departure.
 
 ### Phase 3 — Backend and domain behavior
 
-- [ ] Implement validated flight search, booking, lookup, and health endpoints.
-- [ ] Implement atomic round-trip inventory updates.
-- [ ] Implement deterministic Journey Fit scoring and explanations.
-- [ ] Add clear expected-error responses without leaking stack traces.
+- [x] Implement validated flight search, booking, lookup, and health endpoints.
+- [x] Implement atomic round-trip inventory updates.
+- [x] Implement deterministic Journey Fit scoring and explanations.
+- [x] Add clear expected-error responses without leaking stack traces.
 
-Exit evidence: pending.
+Exit evidence: Zod-backed route handlers return explicit validation, lookup, inventory, and unexpected-error statuses. Integration tests proved two-leg creation, price locking, inventory decrement, lookup normalization, and complete rollback when a return leg lacks capacity.
 
 ### Phase 4 — Core booking interface
 
-- [ ] Build the homepage search and same-page results experience.
-- [ ] Build outbound/return selection with a persistent trip summary.
-- [ ] Build guest checkout, confirmation, and My Trips lookup.
-- [ ] Cover loading, empty, validation, inventory, lookup, and database errors.
+- [x] Build the homepage search and same-page results experience.
+- [x] Build outbound/return selection with a persistent trip summary.
+- [x] Build guest checkout, confirmation, and My Trips lookup.
+- [x] Cover loading, empty, validation, inventory, lookup, and database errors.
 
-Exit evidence: pending.
+Exit evidence: the production browser suite completed round-trip and one-way flows without placeholder screens, confirmed no-result messaging, recovered a persisted trip, and observed a real HTTP 409 sold-out conflict.
 
 ### Phase 5 — Journey Fit and premium polish
 
-- [ ] Add four presets and adjustable normalized weights.
-- [ ] Add original media, restrained motion, and responsive refinement.
-- [ ] Complete keyboard, focus, contrast, touch-target, and reduced-motion work.
+- [x] Add four presets and adjustable normalized weights.
+- [x] Add original media, restrained motion, and responsive refinement.
+- [x] Complete keyboard, focus, contrast, touch-target, and reduced-motion work.
 
-Exit evidence: pending.
+Exit evidence: Chrome showed Value reorder ATL–SFO from Delta to United while Arrive Rested favored Delta, with visible scores and explanations. Narrow-width, keyboard, focus, imagery, console, and emulated reduced-motion checks passed.
 
 ### Phase 6 — Automated verification and local deployment
 
-- [ ] Add domain, API, component, and end-to-end tests.
-- [ ] Pass lint, type-checking, tests, and production build.
-- [ ] Verify clean setup and the deterministic localhost production workflow.
+- [x] Add domain, API, component, and end-to-end tests.
+- [x] Pass lint, type-checking, tests, and production build.
+- [x] Verify clean setup and the deterministic localhost production workflow.
 
-Exit evidence: pending.
+Exit evidence: 13 Vitest tests and 3 Playwright scenarios pass, alongside ESLint, TypeScript, and the optimized Next.js build. The production health endpoint reports SQLite connectivity and non-sensitive counts.
 
 ### Phase 7 — Chrome-led visual QA and troubleshooting
 
-- [ ] Exercise the production build in Chrome at desktop, laptop, and mobile sizes.
-- [ ] Check console/network health, layout, keyboard navigation, and reduced motion.
-- [ ] Complete a real booking and prove persistence with My Trips and `db:verify`.
-- [ ] Capture final screenshots and record every material fix.
+- [x] Exercise the production build in Chrome at desktop, laptop, and mobile sizes.
+- [x] Check console/network health, layout, keyboard navigation, and reduced motion.
+- [x] Complete a real booking and prove persistence with My Trips and `db:verify`.
+- [x] Capture final screenshots and record every material fix.
 
-Exit evidence: pending.
+Exit evidence: `docs/QA_REPORT.md` records the Chrome walkthrough, browser signals, four release screenshots, the persisted `STW-F6F4AE` QA booking, and the post-booking database count.
 
 ### Phase 8 — Submission packaging
 
 - [ ] Finalize the public repository and clean-clone rehearsal.
-- [ ] Finalize README, prompt log, demo script, screenshots, and submission checklist.
-- [ ] Record a 2:15 target demo, upload a video shorter than 2:30, and add its URL.
-- [ ] Mark the active goal complete only after all artifacts are verified.
+- [x] Finalize README, prompt log, demo script, screenshots, and submission checklist.
+- [x] Hand the final recording and YouTube upload to the student, per the 2026-08-02 scope change.
+- [ ] Mark the active goal complete after the implementation, documentation, public repository, and localhost demo are verified.
 
 Exit evidence: pending.
 
@@ -155,4 +155,8 @@ Shared domain types include `FlightSearchInput`, `FlightResult`, `JourneyWeights
 
 - **2026-08-01 — Plan approved:** Established the phased implementation, manual review record, local deployment boundary, public repository choice, real-carrier sample-data policy, Journey Fit behavior, and submission evidence strategy.
 - **2026-08-01 — Execution started:** Created the active project goal and generated the Next.js workspace. The scaffold reported dependency advisories; review was added to the verification work instead of applying a forced downgrade.
-
+- **2026-08-01 — Phases 0–1 complete:** Created and pushed the public repository, locked the Stillway product foundation, generated seven original editorial images with the built-in image workflow, and recorded the responsive UX architecture before feature coding.
+- **2026-08-01 — Phases 2–5 complete:** Added the Prisma 7 SQLite domain, 20 future-dated seeded flights, validated route handlers, atomic booking transactions, the complete guest booking interface, Journey Fit ranking, original imagery, responsive polish, and accessibility behavior.
+- **2026-08-01 — Phase 6 complete:** Added 11 domain/integration/component tests and three isolated Playwright production scenarios. Lint, TypeScript, tests, dependency audit, database verification, and the optimized build passed.
+- **2026-08-01 — Phase 7 complete:** Used the Chrome extension to test the real production app at desktop and narrow widths, complete and refresh a two-leg booking, recover it through My Trips, inspect console output, verify keyboard order and reduced motion, and capture four release screenshots.
+- **2026-08-02 — Video handoff:** The student explicitly took ownership of recording and uploading the final video. Recording automation was removed from the project; the timed `DEMO_SCRIPT.md` remains as the handoff guide.

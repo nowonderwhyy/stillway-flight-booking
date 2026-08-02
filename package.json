@@ -6,21 +6,64 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "e2e:server": "tsx scripts/start-e2e-server.ts",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "db:setup": "prisma migrate deploy && prisma db seed",
+    "db:reset": "prisma migrate reset --force",
+    "db:verify": "tsx scripts/verify-db.ts",
+    "demo": "npm run db:setup && npm run build && npm start",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "lucide-react": "^1.28.0",
+    "motion": "^12.43.0",
     "next": "16.2.12",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "sharp": "^0.35.3",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^4.1.10",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
+    "jsdom": "^29.1.1",
+    "postcss": "^8.5.25",
+    "prisma": "^7.9.1",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "tsx": "^4.23.1",
+    "typescript": "^5",
+    "vitest": "^4.1.10"
+  },
+  "overrides": {
+    "postcss": "$postcss",
+    "sharp": "$sharp"
+  },
+  "allowScripts": {
+    "better-sqlite3": true,
+    "sharp": true,
+    "prisma": true,
+    "@prisma/engines": true,
+    "esbuild": true,
+    "unrs-resolver": true
   }
 }

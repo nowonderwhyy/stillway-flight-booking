@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Airport {
+  id         Int      @id @default(autoincrement())
+  code       String   @unique
+  city       String
+  name       String
+  timezone   String
+  departures Flight[] @relation("FlightOrigin")
+  arrivals   Flight[] @relation("FlightDestination")
+}
+
+model Carrier {
+  id      Int      @id @default(autoincrement())
+  code    String   @unique
+  name    String
+  flights Flight[]
+}
+
+model Flight {
+  id              Int          @id @default(autoincrement())
+  carrierId       Int
+  flightNumber    String
+  originId        Int
+  destinationId   Int
+  departureAt     DateTime
+  arrivalAt       DateTime
+  durationMinutes Int
+  stops           Int          @default(0)
+  priceCents      Int
+  co2Kg           Int
+  availableSeats  Int
+  createdAt       DateTime     @default(now())
+  carrier         Carrier      @relation(fields: [carrierId], references: [id])
+  origin          Airport      @relation("FlightOrigin", fields: [originId], references: [id])
+  destination     Airport      @relation("FlightDestination", fields: [destinationId], references: [id])
+  bookingLegs     BookingLeg[]
+
+  @@unique([carrierId, flightNumber, departureAt])
+  @@index([originId, destinationId, departureAt])
+}
+
+model Booking {
+  id               String       @id @default(uuid())
+  confirmationCode String       @unique
+  firstName        String
+  lastName         String
+  email            String
+  phone            String
+  seatPreference   String
+  travelerCount    Int
+  totalCents       Int
+  status           String       @default("CONFIRMED")
+  createdAt        DateTime     @default(now())
+  legs             BookingLeg[]
+
+  @@index([confirmationCode, email])
+}
+
+model BookingLeg {
+  id         Int     @id @default(autoincrement())
+  bookingId  String
+  flightId   Int
+  direction  String
+  sequence   Int
+  priceCents Int
+  booking    Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  flight     Flight  @relation(fields: [flightId], references: [id])
+
+  @@unique([bookingId, direction])
+  @@index([flightId])
+}

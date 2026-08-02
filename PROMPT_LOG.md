@@ -45,3 +45,56 @@ Each material prompt will add:
 3. Any review, correction, failure, or follow-up.
 4. The affected phase and verification evidence.
 
+## Session 3 — Original editorial media
+
+### Agent prompt set
+
+Generate a cohesive quiet-luxury travel photography system for a premium flight-booking website: one wide cloud-and-wing hero with negative space for copy, then card-friendly Atlanta, San Francisco, New York, Miami, Seattle, and Chicago destination images. Use soft early light, warm ivory, mist blue, muted natural color, believable optics, and restrained cinematic texture. Exclude text, logos, watermarks, focal people, oversaturation, HDR halos, and CGI styling.
+
+### Result and review
+
+Seven original images were generated with the built-in image tool. Each selected PNG was copied to the project, resized, encoded as an optimized WebP, and visually checked. The source PNGs remain in the generation cache; the public repository commits only the optimized WebP assets.
+
+## Session 4 — Domain and interface implementation
+
+### Agent implementation instruction
+
+Implement each approved phase without broadening the product: Next.js Route Handlers, Prisma 7 with the SQLite adapter, idempotent future-dated inventory, validated search and booking APIs, atomic round-trip inventory changes, Journey Fit, same-page results, guest details, confirmation, and code-plus-email My Trips recovery.
+
+### Result and review
+
+The implementation created 6 airports, 5 carriers, 20 flight instances, 10 directional routes, and a complete production interface. Monetary values remain cents; datetimes remain UTC; airport-local formatting uses IANA timezones; booking legs lock their price. All expected API errors are explicit and stack traces remain server-side.
+
+## Session 5 — Automated verification and corrections
+
+### Agent verification prompt
+
+Test ranking presets and custom normalization, strict input validation, price totals, confirmation format, the two-leg transaction, rollback, sold-out conflicts, component state, the default round-trip path, one-way checkout, My Trips recovery, and no results. Then run lint, TypeScript, a production build, and Chromium E2E.
+
+### Results, failures, and fixes
+
+- Vitest initially collected the Playwright file. The configuration was narrowed to `tests/**/*.test.{ts,tsx}`.
+- The first E2E server waited for health before Playwright global setup could initialize its database. The runner was changed to copy the prepared seed database into an ignored isolated database before starting the production server.
+- The first no-result browser case hit the intentional native return-date constraint. The case now selects one-way before moving the departure date.
+- Date parsing was tightened to reject impossible normalized dates such as February 30.
+- Final result: 13 Vitest tests, 3 Playwright cases, lint, TypeScript, and production build all passed.
+
+## Session 6 — Chrome-led release review
+
+### Agent QA prompt
+
+Use the approved Chrome extension as the primary review surface. Inspect desktop and narrow layouts, exercise the real search/ranking/round-trip/checkout/refresh/My Trips path, check keyboard order and reduced motion, review console warnings and errors, verify SQLite changes, and capture release screenshots.
+
+### Result and review
+
+Chrome reported no console warnings or errors, no broken imagery, and no horizontal overflow. Value moved United $271 above Delta $328; Arrive Rested moved Delta back above United. The review created and refreshed confirmation `STW-F6F4AE`, recovered it through My Trips with the matching email, and verified 1 booking in SQLite while all 20 flight records remained. Reduced-motion emulation removed positional movement and smooth scrolling. Four final screenshots were retained under `docs/screenshots/`.
+
+## Session 7 — Video scope handoff
+
+### User prompt
+
+“Don’t make the video, I’ll do that on my own. Just focus on the actual work itself.”
+
+### Result and review
+
+Video recording and upload work stopped. Recording automation was removed from the source tree so the repository remains focused on the actual application. The reviewed 2:15 narration and click path remain in `DEMO_SCRIPT.md` for the student’s own recording.
