@@ -16,8 +16,8 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
-    "db:setup": "prisma migrate deploy && prisma db seed",
-    "db:reset": "prisma migrate reset --force",
+    "db:setup": "tsx scripts/prepare-db.ts && prisma migrate deploy && prisma db seed",
+    "db:reset": "tsx scripts/prepare-db.ts && prisma migrate reset --force",
     "db:verify": "tsx scripts/verify-db.ts",
     "demo": "npm run db:setup && npm run build && npm start",
     "postinstall": "prisma generate"
