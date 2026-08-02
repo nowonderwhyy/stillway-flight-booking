@@ -31,8 +31,8 @@ Stillway is a calm flight marketplace for people who want to understand the trad
 
 1. Translucent top navigation: Stillway, Explore, My Trips, sample-data badge.
 2. Editorial hero with the primary promise and original flight imagery.
-3. Search panel overlapping the hero boundary.
-4. Trust strip: clear totals, transparent ranking, no payment.
+3. A large “Start here” planner overlapping the hero boundary, with a three-step progress rail and visually grouped route, date, traveler, and search controls.
+4. A short booking roadmap: real sample inventory, transparent priorities, and no-payment confirmation.
 5. Same-page result workspace: Journey Fit controls, flight list, persistent trip summary.
 6. Destination editorial cards.
 7. Compact footer with sample-data and airline-name disclaimer.
@@ -41,7 +41,7 @@ Stillway is a calm flight marketplace for people who want to understand the trad
 
 1. Round trip is selected by default with ATL → SFO, one traveler, and dates derived from seeded inventory.
 2. Search validates visible fields and scrolls to same-page results.
-3. Journey Fit starts at Balanced and offers Value, Arrive Rested, Fastest, and Lighter Impact presets plus tuning.
+3. Journey Fit starts at Balanced and offers Spend Less, Arrive Rested, Fastest, and Lighter Impact presets. Each preset names its tradeoff. Optional tuning distributes a fixed 100-point preference budget, so raising one dimension necessarily lowers the others.
 4. The traveler selects an outbound flight, then a return flight; the right rail updates immediately.
 5. Continue opens a focused booking route with the selected itinerary retained in the URL and revalidated on the server.
 6. Guest details are collected with a clear “Demo booking — no payment or charge” statement.
@@ -52,7 +52,7 @@ Stillway is a calm flight marketplace for people who want to understand the trad
 
 - **Desktop ≥ 1100px:** full hero, six-column search panel, result list plus sticky summary rail.
 - **Tablet 720–1099px:** wrapped search grid, single result column, in-flow summary card.
-- **Mobile < 720px:** compact hero, stacked controls, horizontally scrollable presets, full-width cards, sticky bottom trip action after selection.
+- **Mobile < 720px:** compact hero, stacked planner, horizontally scrollable presets, full-width cards, and an in-flow trip summary before the flight list.
 - No horizontal page overflow at 390px. All interactive targets are at least 44px. Focus order follows visual order.
 
 ## Motion rules

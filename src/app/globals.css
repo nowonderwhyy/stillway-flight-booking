@@ -1779,6 +1779,471 @@ a {
 .error-state-card > p:not(.eyebrow) { max-width: 520px; margin: 20px 0 28px; color: var(--muted); font-size: 0.84rem; line-height: 1.7; }
 .error-state-card > div { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; }
 
+/* Guided booking and Journey Fit revision */
+.hero-section,
+.hero-copy {
+  min-height: 620px;
+}
+
+.hero-copy h1 {
+  max-width: 660px;
+  font-size: clamp(4rem, 6.6vw, 6.3rem);
+}
+
+.search-zone {
+  margin-top: -108px;
+}
+
+.search-panel {
+  border-radius: 28px;
+  box-shadow: 0 28px 80px rgba(22, 31, 26, 0.16);
+  padding: 28px;
+}
+
+.planner-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 2px 4px 22px;
+}
+
+.planner-heading h2 {
+  margin: 1px 0 7px;
+  font-size: clamp(1.45rem, 2.2vw, 1.9rem);
+  font-weight: 560;
+  letter-spacing: -0.045em;
+}
+
+.planner-heading > p:last-child {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.planner-header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 9px;
+}
+
+.demo-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.66rem;
+}
+
+.planner-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(237, 238, 230, 0.62);
+}
+
+.planner-step {
+  min-height: 66px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  border-left: 1px solid var(--line);
+  color: var(--muted);
+  padding: 12px 16px;
+}
+
+.planner-step:first-child {
+  border-left: 0;
+}
+
+.planner-step-active {
+  background: #e2e7dd;
+  color: var(--ink);
+}
+
+.planner-step > b {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  font-size: 0.65rem;
+}
+
+.planner-step-active > b {
+  border-color: var(--sage-dark);
+  background: var(--sage-dark);
+  color: white;
+}
+
+.planner-step-complete > b {
+  border-color: var(--sage-dark);
+  color: var(--sage-dark);
+}
+
+.planner-step-complete > b::after {
+  content: "✓";
+}
+
+.planner-step-complete > b {
+  font-size: 0;
+}
+
+.planner-step-complete > b::after {
+  font-size: 0.7rem;
+}
+
+.planner-step > span {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.planner-step strong {
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 690;
+}
+
+.planner-step small {
+  margin-top: 2px;
+  font-size: 0.59rem;
+}
+
+.search-route,
+.search-details {
+  display: grid;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.search-route {
+  grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1fr);
+  margin-top: 16px;
+}
+
+.search-details {
+  margin-top: 12px;
+}
+
+.search-details-roundtrip {
+  grid-template-columns: 1fr 1fr 0.8fr 1.25fr;
+}
+
+.search-details-oneway {
+  grid-template-columns: 1fr 0.8fr 1.25fr;
+}
+
+.search-field {
+  position: relative;
+  min-height: 96px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 15px 17px;
+  transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.search-field:hover {
+  border-color: rgba(83, 100, 81, 0.42);
+  background: white;
+}
+
+.search-field:focus-within {
+  border-color: var(--sage-dark);
+  box-shadow: 0 0 0 3px rgba(83, 100, 81, 0.11);
+}
+
+.route-field {
+  min-height: 108px;
+  padding-right: 46px;
+}
+
+.route-field select {
+  height: 36px;
+  font-size: 1.08rem;
+  letter-spacing: -0.025em;
+}
+
+.search-field input {
+  font-size: 1rem;
+}
+
+.select-chevron {
+  position: absolute;
+  top: 50%;
+  right: 17px;
+  color: var(--sage-dark);
+  pointer-events: none;
+  transform: translateY(-35%);
+}
+
+.swap-button {
+  width: 46px;
+  height: 46px;
+  transition: border-color 150ms ease, background-color 150ms ease, transform 150ms ease;
+}
+
+.swap-button:hover {
+  border-color: var(--sage-dark);
+  background: #e5e9e0;
+  transform: rotate(180deg);
+}
+
+.traveler-field button {
+  width: 30px;
+  height: 30px;
+}
+
+.traveler-field > div {
+  height: 36px;
+  gap: 11px;
+}
+
+.search-button {
+  min-height: 96px;
+  justify-content: flex-start;
+  border-radius: 16px;
+  padding: 18px 22px;
+  text-align: left;
+}
+
+.search-button > span:not(.button-spinner) {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-button strong {
+  font-size: 0.82rem;
+  font-weight: 710;
+}
+
+.search-button small {
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.62rem;
+  font-weight: 500;
+}
+
+.booking-roadmap {
+  padding: 38px 0 58px;
+}
+
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.roadmap-grid > span {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border-left: 1px solid var(--line-strong);
+  padding-left: 16px;
+}
+
+.roadmap-grid > span > b {
+  color: var(--brass);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+}
+
+.roadmap-grid > span > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.roadmap-grid strong {
+  font-size: 0.73rem;
+  font-weight: 680;
+}
+
+.roadmap-grid small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.64rem;
+}
+
+.fit-panel {
+  margin: 38px 0 28px;
+  border-color: rgba(83, 100, 81, 0.27);
+  background: rgba(255, 253, 248, 0.86);
+  padding: 30px;
+}
+
+.fit-heading h3 {
+  font-size: clamp(1.25rem, 2vw, 1.62rem);
+  font-weight: 590;
+}
+
+.fit-heading > div > p:last-child {
+  max-width: 620px;
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+
+.preset-row {
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.preset-card {
+  min-height: 94px;
+  align-items: flex-start;
+  border-radius: 16px;
+  padding: 16px 14px;
+}
+
+.preset-card > svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.preset-card strong {
+  font-size: 0.76rem;
+}
+
+.preset-card small {
+  overflow: visible;
+  margin-top: 5px;
+  font-size: 0.62rem;
+  line-height: 1.4;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.preset-card-active {
+  box-shadow: inset 0 0 0 1px rgba(83, 100, 81, 0.2);
+}
+
+.tuning-drawer {
+  overflow: hidden;
+  margin-top: 26px;
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+}
+
+.budget-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.budget-heading > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.budget-heading strong {
+  font-size: 0.76rem;
+}
+
+.budget-heading small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.64rem;
+}
+
+.budget-heading > strong {
+  color: var(--sage-dark);
+  font-size: 0.72rem;
+}
+
+.preference-budget {
+  height: 9px;
+  display: flex;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--line);
+  margin: 13px 0 22px;
+}
+
+.preference-budget span {
+  min-width: 0;
+  transition: width 180ms ease;
+}
+
+.budget-value { background: #8a6d3b; }
+.budget-speed { background: #315f57; }
+.budget-rest { background: #77886f; }
+.budget-impact { background: #a9b9a0; }
+
+.tuning-grid {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.tuning-control {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.56);
+  padding: 12px 13px 10px;
+}
+
+.tuning-control input {
+  min-height: 28px;
+  margin-top: 6px;
+  cursor: grab;
+}
+
+.tuning-control input:active {
+  cursor: grabbing;
+}
+
+.tuning-note {
+  margin: 13px 0 0;
+}
+
+.fit-rank-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fit-rank-label {
+  color: var(--muted);
+  font-size: 0.61rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.fit-rank-best {
+  border: 1px solid rgba(138, 109, 59, 0.28);
+  border-radius: 999px;
+  background: #f0e9da;
+  color: #745b2e;
+  padding: 6px 9px;
+}
+
+.fit-reasons strong {
+  color: var(--ink);
+  font-size: 0.64rem;
+  font-weight: 700;
+}
+
+.flight-list,
+.flight-card,
+.booking-layout,
+.traveler-form,
+.booking-itinerary,
+.form-intro,
+.form-intro > div {
+  min-width: 0;
+}
+
+.flight-list,
+.flight-card {
+  width: 100%;
+}
+
 @media (max-width: 1100px) {
   .search-fields {
     grid-template-columns: 1fr 38px 1fr 0.9fr 0.9fr;
@@ -1792,6 +2257,10 @@ a {
   .traveler-field { grid-column: span 2; }
   .search-button { grid-column: span 3; }
   .preset-row { grid-template-columns: repeat(3, 1fr); }
+  .search-details .traveler-field,
+  .search-details .search-button { grid-column: auto; }
+  .search-details-roundtrip { grid-template-columns: repeat(2, 1fr); }
+  .search-details-oneway { grid-template-columns: 1fr 0.85fr 1.15fr; }
 }
 
 @media (max-width: 860px) {
@@ -1820,6 +2289,10 @@ a {
   .booking-itinerary { order: -1; }
   .footer-grid { grid-template-columns: 1fr; }
   .footer-links { flex-wrap: wrap; }
+  .planner-header { gap: 24px; }
+  .search-details-oneway { grid-template-columns: 1fr 1fr; }
+  .search-details-oneway .search-button { grid-column: 1 / -1; }
+  .roadmap-grid { gap: 15px; }
 }
 
 @media (max-width: 640px) {
@@ -1866,16 +2339,50 @@ a {
   .booking-page-heading h1, .trips-intro h1, .confirmation-hero h1 { font-size: 3.2rem; }
   .back-link { margin-bottom: 30px; }
   .traveler-form, .booking-itinerary, .lookup-form, .lookup-result, .confirmation-details, .confirmation-next { border-radius: 19px; padding: 22px 18px; }
+  .form-intro { gap: 0; }
+  .form-icon { display: none; }
+  .form-intro p { overflow-wrap: anywhere; }
   .form-grid { grid-template-columns: 1fr; }
   .form-grid-wide { grid-column: auto; }
   .seat-fieldset { grid-template-columns: 1fr; }
   .seat-fieldset.form-grid-wide { grid-column: auto; }
-  .confirm-button { width: 100%; }
+  .confirm-button { min-width: 0; width: 100%; }
   .confirmation-code-row { align-items: flex-start; flex-direction: column; }
   .confirmation-code-row strong { font-size: 1.25rem; }
   .confirmation-hero { padding-bottom: 40px; }
   .lookup-result { min-height: 350px; }
   .footer-links { gap: 17px; }
+  .hero-section, .hero-copy { min-height: 540px; }
+  .hero-copy { padding-bottom: 82px; }
+  .search-zone { margin-top: -28px; }
+  .search-panel { padding: 18px 14px; }
+  .planner-header { flex-direction: column; gap: 15px; padding: 2px 3px 16px; }
+  .planner-header-actions { width: 100%; align-items: flex-start; }
+  .demo-note { display: none; }
+  .planner-steps { grid-template-columns: repeat(3, 1fr); }
+  .planner-step { min-height: 58px; gap: 7px; padding: 9px 8px; }
+  .planner-step > b { width: 23px; height: 23px; font-size: 0.58rem; }
+  .planner-step strong { font-size: 0.63rem; }
+  .planner-step small { display: none; }
+  .search-route { grid-template-columns: 1fr; gap: 7px; margin-top: 10px; }
+  .route-field { min-height: 92px; }
+  .swap-button { justify-self: center; margin: -4px 0; transform: rotate(90deg); }
+  .swap-button:hover { transform: rotate(270deg); }
+  .search-details,
+  .search-details-roundtrip,
+  .search-details-oneway { grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 7px; }
+  .search-details .traveler-field { grid-column: 1 / -1; }
+  .search-details .search-button { grid-column: 1 / -1; min-height: 68px; }
+  .search-field { min-height: 82px; }
+  .booking-roadmap { padding: 30px 0 46px; }
+  .roadmap-grid { grid-template-columns: 1fr; gap: 18px; }
+  .fit-panel { padding: 22px 16px; }
+  .fit-heading { flex-direction: column; }
+  .tune-button { align-self: flex-start; }
+  .budget-heading { align-items: flex-start; flex-direction: column; gap: 7px; }
+  .tuning-grid { grid-template-columns: 1fr; }
+  .flight-card-top { align-items: flex-start; }
+  .fit-rank-block { align-items: flex-end; flex-direction: column-reverse; gap: 5px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

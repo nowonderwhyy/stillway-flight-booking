@@ -19,7 +19,8 @@
     "db:setup": "tsx scripts/prepare-db.ts && prisma migrate deploy && prisma db seed",
     "db:reset": "tsx scripts/prepare-db.ts && prisma migrate reset --force",
     "db:verify": "tsx scripts/verify-db.ts",
-    "demo": "npm run db:setup && npm run build && npm start",
+    "web:verify": "tsx scripts/verify-runtime.ts",
+    "demo": "tsx scripts/preflight-demo.ts && npm run db:setup && npm run build && npm start",
     "postinstall": "prisma generate"
   },
   "dependencies": {

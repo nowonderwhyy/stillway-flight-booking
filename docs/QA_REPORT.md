@@ -43,3 +43,34 @@ The browser suite covers a default ATL–SFO round trip through confirmation and
 - `docs/screenshots/04-confirmation.png`
 
 No release-blocking console errors, broken images, page overflow, persistence failures, stale lookup state, or unexplained Journey Fit behavior remained at the end of the walkthrough.
+
+## 2026-08-02 interaction-repair and redesign pass
+
+### Reproduction and root cause
+
+Chrome reproduced the reported page that rendered normally but ignored every click. The network log showed HTTP 500 responses for generated Next.js JavaScript and CSS chunks followed by a `ChunkLoadError`. The database health route still reported normal SQLite connectivity and 20 flights. The failure came from rebuilding `.next` while an older production server remained alive, leaving its HTML and chunk manifest out of sync.
+
+The repair adds two operational guardrails:
+
+- `npm run demo` checks port 3000 first and refuses to change the build while a server is active.
+- `npm run web:verify` loads the homepage, every referenced Next.js JavaScript/CSS asset, and the health route.
+
+### Revised gate
+
+- `npm run lint`: passed
+- `npm run typecheck`: passed
+- `npm test`: 4 files and 16 tests passed
+- `npm run build`: passed
+- `npm run test:e2e`: 4 Chromium production scenarios passed
+- `npm run db:verify`: connected, 20 flights, 10 directional routes, 1 retained local booking
+- `npm run web:verify`: 12 client assets loaded and database health OK
+- `npm audit --omit=dev`: 0 vulnerabilities
+
+### Chrome design and interaction sweep
+
+- Full-screen review at 1707×803 found a clearer visual hierarchy: promise, “Start here” planner, three-step path, route/date/traveler controls, and one unambiguous primary action.
+- Traveler and destination controls responded after hydration repair; one-way, round-trip, outbound, return, checkout, and My Trips paths remain covered by the production suite.
+- Journey Fit presets communicate what the traveler gives up. The custom mix always totals 100 points, automatically creates room when one priority rises, and never explains a zero-weight dimension as a strength.
+- The full-screen result view keeps fare, schedule, emissions, rationale, and explicit selection language visible together.
+- An intentionally severe 260px-wide Chrome stress test found and corrected min-content expansion in flight cards, the traveler form, and the confirm button. Final results and checkout measurements both reported equal client and document scroll widths.
+- The final clean production load reported `readyState: complete`, zero runtime exceptions, zero console/network errors, and no horizontal overflow.

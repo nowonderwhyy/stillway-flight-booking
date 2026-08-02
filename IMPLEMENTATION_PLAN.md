@@ -1,6 +1,6 @@
 # Stillway Flight Booking Application — Implementation Plan
 
-> Status: Implementation complete; final video remains a student-owned submission step
+> Status: Revised implementation complete; final video remains a student-owned submission step
 > Product: Stillway — “Travel at your rhythm.”  
 > Working directory: `<Desktop>\stillway-flight-booking`
 
@@ -131,6 +131,18 @@ Exit evidence: `docs/QA_REPORT.md` records the Chrome walkthrough, browser signa
 
 Exit evidence: the final public `master` branch was cloned into a new directory without a `.env` or database. The exact release workflow created SQLite, applied the migration, seeded 20 flights, reported 10 directional routes and 0 initial bookings, passed lint and TypeScript, passed 13 Vitest tests and 3 Playwright scenarios, and produced the optimized Next.js build. Video recording and upload remain outside the implementation scope by explicit student request.
 
+### Phase 9 — Interaction repair and experience redesign
+
+- [x] Reproduce and isolate the reported non-responsive controls in the real Chrome production session.
+- [x] Protect the local workflow against stale Next.js client chunks and add a running-site asset verifier.
+- [x] Redesign the planner so the route, dates, travelers, three-step path, and primary action read as the starting point.
+- [x] Replace independent Journey Fit percentages with a fixed 100-point priority budget and explicit preset tradeoffs.
+- [x] Make flight choice, ranking rationale, and itinerary progress more explicit.
+- [x] Stress-test results and checkout at full-screen and an extreme narrow width; fix all page overflow.
+- [x] Repeat lint, TypeScript, unit/component/integration tests, production build, browser scenarios, database verification, runtime verification, and dependency audit.
+
+Exit evidence: the original dead-control state produced HTTP 500 responses for generated Next.js chunks and a browser `ChunkLoadError` because an old production process remained active while `.next` was rebuilt. A clean restart restored hydration. `npm run demo` now refuses to rebuild when port 3000 is occupied, and `npm run web:verify` loads all 12 referenced client assets plus database health. Chrome then completed the interaction flow at 1707×803 and an intentionally harsh 260px-wide stress viewport with equal document and scroll widths, zero runtime exceptions, and zero console/network errors. The revised gate passes 16 Vitest tests, 4 Playwright scenarios, the optimized build, 20-flight database verification, and a zero-vulnerability production audit.
+
 ## Interface contract
 
 - `GET /api/flights`: `origin`, `destination`, `date`, and `travelers` query parameters.
@@ -161,3 +173,4 @@ Shared domain types include `FlightSearchInput`, `FlightResult`, `JourneyWeights
 - **2026-08-01 — Phase 7 complete:** Used the Chrome extension to test the real production app at desktop and narrow widths, complete and refresh a two-leg booking, recover it through My Trips, inspect console output, verify keyboard order and reduced motion, and capture four release screenshots.
 - **2026-08-02 — Video handoff:** The student explicitly took ownership of recording and uploading the final video. Recording automation was removed from the project; the timed `DEMO_SCRIPT.md` remains as the handoff guide.
 - **2026-08-02 — Phase 8 implementation complete:** A first clean checkout exposed that Prisma's Windows migration engine would not create a missing SQLite file. Added a cross-platform preparation step, pushed the fix, then repeated the rehearsal from a second untouched checkout with no `.env`. Database setup, verification, lint, type-checking, 13 Vitest tests, the production build, and 3 Playwright scenarios all passed.
+- **2026-08-02 — Phase 9 interaction and UX revision complete:** Proved that non-responsive controls came from mismatched Next.js chunks rather than SQLite, added safe-demo and runtime-asset checks, promoted the search surface into a guided planner, converted custom Journey Fit tuning into a real 100-point tradeoff, strengthened ranking and selection language, corrected narrow results/checkout overflow, and repeated automated plus Chrome production QA.

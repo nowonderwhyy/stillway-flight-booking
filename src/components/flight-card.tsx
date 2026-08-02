@@ -2,7 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight, Leaf, Plane, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Leaf, Plane } from "lucide-react";
 import { formatCurrency, formatDuration, formatShortDate, formatTime } from "@/lib/format";
 import type { RankedFlight } from "@/lib/types";
 
@@ -10,9 +10,11 @@ type FlightCardProps = {
   flight: RankedFlight;
   selected: boolean;
   onSelect: () => void;
+  rank: number;
+  selectionLabel: "outbound" | "return";
 };
 
-export function FlightCard({ flight, selected, onSelect }: FlightCardProps) {
+export function FlightCard({ flight, selected, onSelect, rank, selectionLabel }: FlightCardProps) {
   const reduceMotion = useReducedMotion();
   const scoreStyle = { "--fit-score": `${flight.journeyFit.score * 3.6}deg` } as CSSProperties;
 
@@ -30,8 +32,13 @@ export function FlightCard({ flight, selected, onSelect }: FlightCardProps) {
             <small>{flight.flightNumber} · Sample schedule</small>
           </span>
         </div>
-        <div className="fit-score" style={scoreStyle} aria-label={`Journey Fit score ${flight.journeyFit.score} out of 100`}>
-          <span>{flight.journeyFit.score}</span>
+        <div className="fit-rank-block">
+          <span className={rank === 1 ? "fit-rank-label fit-rank-best" : "fit-rank-label"}>
+            {rank === 1 ? "Best match" : `Fit #${rank}`}
+          </span>
+          <div className="fit-score" style={scoreStyle} aria-label={`Journey Fit score ${flight.journeyFit.score} out of 100`}>
+            <span>{flight.journeyFit.score}</span>
+          </div>
         </div>
       </div>
 
@@ -58,9 +65,10 @@ export function FlightCard({ flight, selected, onSelect }: FlightCardProps) {
 
       <div className="flight-card-bottom">
         <div className="fit-reasons">
-          <span>
-            <Sparkles size={14} aria-hidden="true" /> {flight.journeyFit.explanations[0]}
-          </span>
+          <strong>Why it fits your priorities</strong>
+          {flight.journeyFit.explanations.map((explanation) => (
+            <span key={explanation}><CheckCircle2 size={14} aria-hidden="true" /> {explanation}</span>
+          ))}
           <span>
             <Leaf size={14} aria-hidden="true" /> {flight.co2Kg} kg estimated CO₂
           </span>
@@ -70,7 +78,7 @@ export function FlightCard({ flight, selected, onSelect }: FlightCardProps) {
           <strong>{formatCurrency(flight.priceCents)}</strong>
           <small>per traveler</small>
           <button type="button" onClick={onSelect} aria-pressed={selected}>
-            {selected ? "Selected" : "Choose"}
+            {selected ? `${selectionLabel === "outbound" ? "Outbound" : "Return"} selected` : `Choose ${selectionLabel}`}
             {!selected && <ArrowRight size={15} aria-hidden="true" />}
           </button>
         </div>

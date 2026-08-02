@@ -74,6 +74,41 @@ export function normalizeJourneyWeights(weights: JourneyWeights): JourneyWeights
   };
 }
 
+export function rebalanceJourneyWeights(
+  weights: JourneyWeights,
+  changedKey: keyof JourneyWeights,
+  requestedValue: number,
+): JourneyWeights {
+  const keys = Object.keys(weights) as (keyof JourneyWeights)[];
+  const otherKeys = keys.filter((key) => key !== changedKey);
+  const requestedUnits = Math.round(clamp(requestedValue / 100) * 20);
+  const remainingUnits = 20 - requestedUnits;
+  const otherTotal = otherKeys.reduce((total, key) => total + Math.max(0, weights[key]), 0);
+  const allocations = otherKeys.map((key, index) => {
+    const exactUnits = otherTotal === 0
+      ? remainingUnits / otherKeys.length
+      : (Math.max(0, weights[key]) / otherTotal) * remainingUnits;
+    return { key, index, units: Math.floor(exactUnits), remainder: exactUnits - Math.floor(exactUnits) };
+  });
+  let unassignedUnits = remainingUnits - allocations.reduce((total, allocation) => total + allocation.units, 0);
+
+  allocations
+    .slice()
+    .sort((a, b) => b.remainder - a.remainder || a.index - b.index)
+    .forEach((allocation) => {
+      if (unassignedUnits > 0) {
+        allocations[allocation.index].units += 1;
+        unassignedUnits -= 1;
+      }
+    });
+
+  const result = { ...weights, [changedKey]: requestedUnits * 5 };
+  allocations.forEach(({ key, units }) => {
+    result[key] = units * 5;
+  });
+  return result;
+}
+
 export function rankFlights(flights: FlightResult[], weights: JourneyWeights): RankedFlight[] {
   if (flights.length === 0) return [];
 
@@ -109,6 +144,7 @@ export function rankFlights(flights: FlightResult[], weights: JourneyWeights): R
         contributions.reduce((total, contribution) => total + contribution.contribution, 0) * 100,
       );
       const explanations = contributions
+        .filter(({ key, contribution }) => normalizedWeights[key] > 0 && contribution > 0)
         .sort((a, b) => b.contribution - a.contribution)
         .slice(0, 2)
         .map(({ key }) => dimensionCopy[key]);

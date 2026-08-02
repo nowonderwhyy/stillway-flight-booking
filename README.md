@@ -10,8 +10,8 @@ All airline schedules, availability, prices, and emissions estimates are fiction
 
 ## What stands out
 
-- **Journey Fit:** deterministic 0–100 ranking around Value, Arrive Rested, Fastest, or Lighter Impact priorities, with normalized custom weights and plain-language explanations.
-- **Low-friction booking:** round trip by default, visible controls, same-page results, and an outbound-to-return selection sequence with a persistent trip summary.
+- **Journey Fit:** deterministic 0–100 ranking around Spend Less, Arrive Rested, Fastest, or Lighter Impact priorities. A custom mix uses a fixed 100-point budget, so increasing one priority creates an understandable tradeoff with the others.
+- **Guided booking:** a prominent planner, visible three-step progress, same-page results, explicit flight-selection actions, and a persistent trip summary make the next action obvious without adding extra pages.
 - **Real persistence:** SQLite stores bookings and locked leg prices; My Trips retrieves a record only when its confirmation code and normalized email match.
 - **Trustworthy demo framing:** sample status and no-payment language remain visible throughout the experience.
 - **Original visual system:** seven locally hosted editorial images, warm ivory and deep ink colors, restrained motion, responsive layouts, and reduced-motion support.
@@ -39,11 +39,13 @@ npm start
 
 Open [http://localhost:3000](http://localhost:3000).
 
-For subsequent demonstrations, the convenience command prepares missing migrations and seed inventory without resetting existing bookings:
+For subsequent demonstrations, the convenience command checks that port 3000 is free, prepares missing migrations and seed inventory without resetting existing bookings, builds, and starts production:
 
 ```powershell
 npm run demo
 ```
+
+Stop an existing Stillway server with `Ctrl+C` before running this command. The preflight intentionally refuses to rebuild over a live production server because an old server can otherwise keep serving HTML that references no-longer-matching Next.js chunks.
 
 The runtime database is `data/stillway.db`. It is intentionally ignored by Git; schema, migrations, and idempotent seed logic are committed.
 
@@ -65,9 +67,21 @@ npm run typecheck
 npm test
 npm run build
 npm run test:e2e
+npm run web:verify
 ```
 
-The automated suite covers Journey Fit scoring and presets, weight normalization, strict date/contact validation, booking totals, confirmation format, two-leg inventory transactions, rollback, lookup privacy, component state, round-trip persistence, one-way checkout, no results, and sold-out conflicts.
+The final gate includes 16 Vitest tests and 4 Playwright production scenarios. It covers Journey Fit scoring, presets and 100-point rebalancing; strict date/contact validation; booking totals; confirmation format; two-leg inventory transactions and rollback; lookup privacy; responsive component state; round-trip persistence; one-way checkout; no results; sold-out conflicts; and client hydration. `web:verify` additionally loads every JavaScript and CSS asset referenced by the running page and checks database health.
+
+## If the page renders but clicks do nothing
+
+This usually means a production server remained open while `.next` was rebuilt, leaving its HTML and client chunks out of sync. It is not a SQLite failure.
+
+1. Stop the process running Stillway with `Ctrl+C`.
+2. Run `npm run build`.
+3. Run `npm start`.
+4. Run `npm run web:verify` in another terminal.
+
+Using `npm run demo` prevents this state by checking port 3000 before it changes the build.
 
 ## API
 

@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { BookingForm } from "@/components/booking-form";
@@ -22,11 +22,20 @@ describe("booking interface components", () => {
     const user = userEvent.setup();
     const onPreset = vi.fn();
     const onToggleTuning = vi.fn();
-    render(<JourneyFitPanel activePreset="balanced" weights={JOURNEY_PRESETS.balanced} tuningOpen={false} onPreset={onPreset} onWeights={vi.fn()} onToggleTuning={onToggleTuning} />);
+    render(<JourneyFitPanel activePreset="balanced" weights={JOURNEY_PRESETS.balanced} tuningOpen={false} onPreset={onPreset} onWeightChange={vi.fn()} onToggleTuning={onToggleTuning} />);
     await user.click(screen.getByRole("button", { name: /arrive rested/i }));
     expect(onPreset).toHaveBeenCalledWith("rested");
-    await user.click(screen.getByRole("button", { name: /fine-tune/i }));
+    await user.click(screen.getByRole("button", { name: /build my mix/i }));
     expect(onToggleTuning).toHaveBeenCalledOnce();
+  });
+
+  it("exposes a named priority-budget control for custom tradeoffs", () => {
+    const onWeightChange = vi.fn();
+    render(<JourneyFitPanel activePreset="custom" weights={JOURNEY_PRESETS.balanced} tuningOpen onPreset={vi.fn()} onWeightChange={onWeightChange} onToggleTuning={vi.fn()} />);
+    const speedSlider = screen.getByRole("slider", { name: "Travel faster" });
+    fireEvent.change(speedSlider, { target: { value: "100" } });
+    expect(onWeightChange).toHaveBeenCalledWith("speed", 100);
+    expect(screen.getByLabelText(/priority budget: value 25 percent/i)).toBeVisible();
   });
 
   it("keeps checkout disabled until the required itinerary is selected", () => {

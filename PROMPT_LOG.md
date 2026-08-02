@@ -108,3 +108,18 @@ Clone the public repository into a new directory, remove any inherited database 
 ### Results, failure, and fix
 
 The first untouched checkout revealed a Windows-specific Prisma behavior: `migrate deploy` did not create a missing SQLite file and returned a schema-engine error. A cross-platform preparation script now creates the configured SQLite directory and empty file before migration. A second untouched public clone with no `.env` then created and seeded the database successfully, reported 20 flights and 10 routes, passed lint and TypeScript, passed 13 Vitest tests and 3 Chromium scenarios, and completed the optimized build.
+
+## Session 9 — Interaction repair and experience redesign
+
+### User prompt
+
+After restarting the app, clicks did not register: traveler quantity and destination controls appeared inert. The user asked for the app to be repaired and fully tested in the Google Chrome extension, then critiqued the experience as visually strong but too easy to gloss over. The search card needed to feel like the obvious starting point, the flow needed more guidance, and the independent Journey Fit sliders felt pointless because every preference could appear to be maximized. The user authorized a broad but restrained redesign, asked for an opinionated visual and usability sweep, requested a new active goal, and retained ownership of the final video.
+
+### Diagnosis, implementation, and review
+
+- Chrome reproduced HTTP 500 responses for generated Next.js JavaScript/CSS chunks and a `ChunkLoadError`. SQLite health and inventory were intact. The cause was a production process serving an earlier HTML/chunk manifest while `.next` had been rebuilt underneath it.
+- A clean stop, build, and restart restored hydration. `npm run demo` now refuses to build while port 3000 is occupied, and `npm run web:verify` fetches the page, all referenced client assets, and API health.
+- The overlapping search surface became a larger guided planner with “Start here,” three visible steps, clearer route/date/traveler grouping, and an explicit “Show available flights” action.
+- Journey Fit now spends a fixed 100-point budget. Raising one priority proportionally lowers the others, presets explain their downside, and zero-weight dimensions no longer produce misleading score explanations.
+- Flight cards now expose rank, score rationale, emissions, and explicit outbound/return choice language. Phone-width CSS constraints were corrected for flight cards, the passenger form, and its confirmation button.
+- Final evidence: lint and TypeScript passed; 4 test files and 16 Vitest tests passed; 4 Playwright production scenarios passed; the optimized build passed; 20 seeded flights and 10 directional routes verified; all 12 client assets loaded; the production dependency audit reported zero vulnerabilities. Chrome at 1707×803 and a 260px stress viewport reported no horizontal overflow, runtime exceptions, console errors, or network errors.

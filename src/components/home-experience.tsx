@@ -3,13 +3,13 @@
 import Image from "next/image";
 import { FormEvent, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowDown, ArrowRight, ArrowUpDown, CalendarDays, Minus, Plus, Search, ShieldCheck, Sparkles, Users } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpDown, CalendarDays, ChevronDown, Minus, Plus, Search, ShieldCheck, Sparkles, Users } from "lucide-react";
 import { DestinationGrid } from "@/components/destination-grid";
 import { FlightCard } from "@/components/flight-card";
 import { JourneyFitPanel, weightsForPreset } from "@/components/journey-fit-panel";
 import { SiteFooter } from "@/components/site-footer";
 import { TripSummary } from "@/components/trip-summary";
-import { JOURNEY_PRESETS, rankFlights, type JourneyPreset } from "@/lib/journey-fit";
+import { JOURNEY_PRESETS, rankFlights, rebalanceJourneyWeights, type JourneyPreset } from "@/lib/journey-fit";
 import type { AirportSummary, FlightResult, JourneyWeights } from "@/lib/types";
 
 type DefaultSearch = { origin: string; destination: string; departureDate: string; returnDate: string };
@@ -106,33 +106,52 @@ export function HomeExperience({ airports, defaultSearch }: { airports: AirportS
           <motion.div className="shell hero-copy" initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0.15 : 0.7, ease: [0.22, 1, 0.36, 1] }}>
             <p className="eyebrow hero-eyebrow">Flight search, rethought</p>
             <h1 id="hero-heading">Travel at<br />your rhythm.</h1>
-            <p>Flights ranked around the way you want to arrive—not only the lowest number on the page.</p>
-            <button type="button" className="hero-link" onClick={() => searchRef.current?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" })}>Begin your search <ArrowDown size={16} /></button>
+            <p>Search a real sample inventory, choose what matters, and assemble a trip without an account or payment.</p>
+            <button type="button" className="hero-link" onClick={() => searchRef.current?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" })}>Start with your trip <ArrowDown size={16} /></button>
           </motion.div>
         </section>
 
         <section className="search-zone" aria-label="Search sample flights">
           <div className="shell" ref={searchRef}>
-            <form className="search-panel" onSubmit={handleSearch}>
-              <div className="search-panel-top">
-                <div className="trip-toggle" role="group" aria-label="Trip type">
-                  <button type="button" className={search.roundTrip ? "active" : ""} onClick={() => updateSearch("roundTrip", true)} aria-pressed={search.roundTrip}>Round trip</button>
-                  <button type="button" className={!search.roundTrip ? "active" : ""} onClick={() => updateSearch("roundTrip", false)} aria-pressed={!search.roundTrip}>One way</button>
+            <form className="search-panel" onSubmit={handleSearch} aria-labelledby="planner-heading">
+              <div className="planner-header">
+                <div className="planner-heading">
+                  <p className="eyebrow">Start here</p>
+                  <h2 id="planner-heading">Plan your sample journey.</h2>
+                  <p>Set the route and dates. Stillway will guide you through the rest.</p>
                 </div>
-                <span><ShieldCheck size={15} /> Demo experience · no payment</span>
+                <div className="planner-header-actions">
+                  <div className="trip-toggle" role="group" aria-label="Trip type">
+                    <button type="button" className={search.roundTrip ? "active" : ""} onClick={() => updateSearch("roundTrip", true)} aria-pressed={search.roundTrip}>Round trip</button>
+                    <button type="button" className={!search.roundTrip ? "active" : ""} onClick={() => updateSearch("roundTrip", false)} aria-pressed={!search.roundTrip}>One way</button>
+                  </div>
+                  <span className="demo-note"><ShieldCheck size={15} /> Demo only · no payment</span>
+                </div>
               </div>
-              <div className="search-fields">
-                <label className="search-field">
+
+              <div className="planner-steps" aria-label="Booking steps">
+                <span className={hasSearched ? "planner-step planner-step-complete" : "planner-step planner-step-active"}><b>1</b><span><strong>Search</strong><small>{hasSearched ? "Search complete" : "Route and dates"}</small></span></span>
+                <span className={hasSearched ? "planner-step planner-step-active" : "planner-step"}><b>2</b><span><strong>Choose flights</strong><small>Compare what fits</small></span></span>
+                <span className="planner-step"><b>3</b><span><strong>Guest details</strong><small>Confirm, no payment</small></span></span>
+              </div>
+
+              <div className="search-route">
+                <label className="search-field route-field">
                   <span>From</span>
                   <select value={search.origin} onChange={(event) => updateSearch("origin", event.target.value)}>{airports.map((airport) => <option key={airport.code} value={airport.code}>{airport.code} — {airport.city}</option>)}</select>
                   <small>{airports.find((airport) => airport.code === search.origin)?.name}</small>
+                  <ChevronDown className="select-chevron" size={18} aria-hidden="true" />
                 </label>
                 <button type="button" className="swap-button" onClick={() => setSearch((current) => ({ ...current, origin: current.destination, destination: current.origin }))} aria-label="Swap origin and destination"><ArrowUpDown size={16} /></button>
-                <label className="search-field">
+                <label className="search-field route-field">
                   <span>To</span>
                   <select value={search.destination} onChange={(event) => updateSearch("destination", event.target.value)}>{airports.map((airport) => <option key={airport.code} value={airport.code}>{airport.code} — {airport.city}</option>)}</select>
                   <small>{airports.find((airport) => airport.code === search.destination)?.name}</small>
+                  <ChevronDown className="select-chevron" size={18} aria-hidden="true" />
                 </label>
+              </div>
+
+              <div className={search.roundTrip ? "search-details search-details-roundtrip" : "search-details search-details-oneway"}>
                 <label className="search-field date-field"><span><CalendarDays size={14} /> Depart</span><input type="date" value={search.departureDate} onChange={(event) => updateSearch("departureDate", event.target.value)} required /><small>Local departure date</small></label>
                 {search.roundTrip && <label className="search-field date-field"><span><CalendarDays size={14} /> Return</span><input type="date" min={search.departureDate} value={search.returnDate} onChange={(event) => updateSearch("returnDate", event.target.value)} required /><small>Back to {search.origin}</small></label>}
                 <div className="search-field traveler-field">
@@ -140,14 +159,23 @@ export function HomeExperience({ airports, defaultSearch }: { airports: AirportS
                   <div><button type="button" onClick={() => updateSearch("travelers", Math.max(1, search.travelers - 1))} aria-label="Remove traveler" disabled={search.travelers === 1}><Minus size={14} /></button><strong>{search.travelers}</strong><button type="button" onClick={() => updateSearch("travelers", Math.min(6, search.travelers + 1))} aria-label="Add traveler" disabled={search.travelers === 6}><Plus size={14} /></button></div>
                   <small>Up to six guests</small>
                 </div>
-                <button className="search-button" type="submit" disabled={loading}>{loading ? <span className="button-spinner" aria-hidden="true" /> : <Search size={18} />}{loading ? "Searching" : "Search flights"}</button>
+                <button className="search-button" type="submit" disabled={loading} aria-label="Search flights">
+                  {loading ? <span className="button-spinner" aria-hidden="true" /> : <Search size={20} />}
+                  <span><strong>{loading ? "Searching inventory" : "Show available flights"}</strong><small>{search.origin} to {search.destination} · {search.travelers} {search.travelers === 1 ? "traveler" : "travelers"}</small></span>
+                </button>
               </div>
               {error && <p className="form-error" role="alert">{error}</p>}
             </form>
           </div>
         </section>
 
-        <section className="trust-strip" aria-label="Stillway commitments"><div className="shell trust-grid"><span><strong>Clear totals.</strong> Sample fares stay visible.</span><span><strong>Transparent fit.</strong> Every score explains itself.</span><span><strong>Simple confirmation.</strong> No account or payment required.</span></div></section>
+        <section className="booking-roadmap" aria-label="How Stillway works">
+          <div className="shell roadmap-grid">
+            <span><b>01</b><span><strong>Search real sample inventory</strong><small>Twenty SQLite-backed flight instances</small></span></span>
+            <span><b>02</b><span><strong>Choose by your priorities</strong><small>Every ranking explains its tradeoffs</small></span></span>
+            <span><b>03</b><span><strong>Confirm without friction</strong><small>No account, payment, or hidden total</small></span></span>
+          </div>
+        </section>
 
         <AnimatePresence initial={false}>
           {hasSearched && (
@@ -157,10 +185,10 @@ export function HomeExperience({ airports, defaultSearch }: { airports: AirportS
                   <div><p className="eyebrow">{phase === "outbound" ? "Step 1 of 2" : "Step 2 of 2"}</p><h2 id="results-heading">{phase === "outbound" ? `${search.origin} to ${search.destination}` : `${search.destination} to ${search.origin}`}</h2><p>{displayedFlights.length} sample {displayedFlights.length === 1 ? "option" : "options"} · sorted by your Journey Fit</p></div>
                   {phase === "return" && <button className="text-button" type="button" onClick={() => setPhase("outbound")}>Review outbound <ArrowRight size={14} /></button>}
                 </div>
-                <JourneyFitPanel activePreset={activePreset} weights={weights} tuningOpen={tuningOpen} onPreset={selectPreset} onWeights={(next) => { setWeights(next); setActivePreset("custom"); }} onToggleTuning={() => setTuningOpen((open) => !open)} />
+                <JourneyFitPanel activePreset={activePreset} weights={weights} tuningOpen={tuningOpen} onPreset={selectPreset} onWeightChange={(key, value) => { setWeights((current) => rebalanceJourneyWeights(current, key, value)); setActivePreset("custom"); }} onToggleTuning={() => setTuningOpen((open) => !open)} />
                 <div className="results-workspace">
                   <div className="flight-list" aria-live="polite">
-                    {displayedFlights.length === 0 ? <div className="empty-results"><Sparkles size={24} /><h3>No sample flights match those details.</h3><p>Try the prefilled ATL to SFO dates or choose another destination below.</p></div> : displayedFlights.map((flight) => <FlightCard key={flight.id} flight={flight} selected={selectedId === flight.id} onSelect={() => selectFlight(flight)} />)}
+                    {displayedFlights.length === 0 ? <div className="empty-results"><Sparkles size={24} /><h3>No sample flights match those details.</h3><p>Try the prefilled ATL to SFO dates or choose another destination below.</p></div> : displayedFlights.map((flight, index) => <FlightCard key={flight.id} flight={flight} selected={selectedId === flight.id} rank={index + 1} selectionLabel={phase} onSelect={() => selectFlight(flight)} />)}
                   </div>
                   <TripSummary outbound={selectedOutbound} returning={selectedReturn} travelers={search.travelers} roundTrip={search.roundTrip} onEditOutbound={() => setPhase("outbound")} onEditReturn={() => setPhase("return")} />
                 </div>

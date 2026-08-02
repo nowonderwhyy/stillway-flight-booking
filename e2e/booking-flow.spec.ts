@@ -1,12 +1,21 @@
 import { expect, test } from "@playwright/test";
 
+test("homepage hydrates and its primary planning controls respond", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator(".traveler-field strong")).toHaveText("1");
+  await page.getByRole("button", { name: "Add traveler" }).click();
+  await expect(page.locator(".traveler-field strong")).toHaveText("2");
+  await page.getByRole("combobox", { name: /^To / }).selectOption("JFK");
+  await expect(page.getByRole("combobox", { name: /^To / })).toHaveValue("JFK");
+});
+
 test("default ATL round trip persists and is recoverable in My Trips", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Search flights" }).click();
   await expect(page.getByRole("heading", { name: "ATL to SFO" })).toBeVisible();
-  await page.getByRole("button", { name: "Choose" }).first().click();
+  await page.getByRole("button", { name: "Choose outbound" }).first().click();
   await expect(page.getByRole("heading", { name: "SFO to ATL" })).toBeVisible();
-  await page.getByRole("button", { name: "Choose" }).first().click();
+  await page.getByRole("button", { name: "Choose return" }).first().click();
   await page.getByRole("link", { name: /continue to details/i }).click();
   await page.getByLabel("First name").fill("Avery");
   await page.getByLabel("Last name").fill("Morgan");
@@ -30,7 +39,7 @@ test("one-way selection reaches guest checkout", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "One way" }).click();
   await page.getByRole("button", { name: "Search flights" }).click();
-  await page.getByRole("button", { name: "Choose" }).first().click();
+  await page.getByRole("button", { name: "Choose outbound" }).first().click();
   await page.getByRole("link", { name: /continue to details/i }).click();
   await expect(page.getByRole("heading", { name: /one last step/i })).toBeVisible();
   await expect(page.getByText(/sample total/i).first()).toBeVisible();
