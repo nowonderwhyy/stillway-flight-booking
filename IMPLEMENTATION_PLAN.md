@@ -1,6 +1,6 @@
 # Stillway Flight Booking Application — Implementation Plan
 
-> Status: Active  
+> Status: Implementation complete; final video remains a student-owned submission step  
 > Product: Stillway — “Travel at your rhythm.”  
 > Working directory: `<Desktop>\stillway-flight-booking`
 
@@ -124,12 +124,12 @@ Exit evidence: `docs/QA_REPORT.md` records the Chrome walkthrough, browser signa
 
 ### Phase 8 — Submission packaging
 
-- [ ] Finalize the public repository and clean-clone rehearsal.
+- [x] Finalize the public repository and clean-clone rehearsal.
 - [x] Finalize README, prompt log, demo script, screenshots, and submission checklist.
 - [x] Hand the final recording and YouTube upload to the student, per the 2026-08-02 scope change.
-- [ ] Mark the active goal complete after the implementation, documentation, public repository, and localhost demo are verified.
+- [x] Verify the implementation, documentation, public repository, and localhost demo so the active implementation goal can be closed.
 
-Exit evidence: pending.
+Exit evidence: the final public `master` branch was cloned into a new directory without a `.env` or database. The exact release workflow created SQLite, applied the migration, seeded 20 flights, reported 10 directional routes and 0 initial bookings, passed lint and TypeScript, passed 13 Vitest tests and 3 Playwright scenarios, and produced the optimized Next.js build. Video recording and upload remain outside the implementation scope by explicit student request.
 
 ## Interface contract
 
@@ -149,7 +149,7 @@ Shared domain types include `FlightSearchInput`, `FlightResult`, `JourneyWeights
 - Confirmation and My Trips remain valid after refresh and server restart.
 - My Trips requires the matching confirmation code and email.
 - No real payment, account system, or live-flight claim is implied.
-- The production localhost build, public repository, required documents, and sub-2:30 demo are complete.
+- The production localhost build, public repository, and required implementation documents are complete; the student owns the final sub-2:30 recording and upload.
 
 ## Revision log
 
@@ -160,3 +160,4 @@ Shared domain types include `FlightSearchInput`, `FlightResult`, `JourneyWeights
 - **2026-08-01 — Phase 6 complete:** Added 11 domain/integration/component tests and three isolated Playwright production scenarios. Lint, TypeScript, tests, dependency audit, database verification, and the optimized build passed.
 - **2026-08-01 — Phase 7 complete:** Used the Chrome extension to test the real production app at desktop and narrow widths, complete and refresh a two-leg booking, recover it through My Trips, inspect console output, verify keyboard order and reduced motion, and capture four release screenshots.
 - **2026-08-02 — Video handoff:** The student explicitly took ownership of recording and uploading the final video. Recording automation was removed from the project; the timed `DEMO_SCRIPT.md` remains as the handoff guide.
+- **2026-08-02 — Phase 8 implementation complete:** A first clean checkout exposed that Prisma's Windows migration engine would not create a missing SQLite file. Added a cross-platform preparation step, pushed the fix, then repeated the rehearsal from a second untouched checkout with no `.env`. Database setup, verification, lint, type-checking, 13 Vitest tests, the production build, and 3 Playwright scenarios all passed.

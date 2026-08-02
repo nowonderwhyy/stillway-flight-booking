@@ -98,3 +98,13 @@ Chrome reported no console warnings or errors, no broken imagery, and no horizon
 ### Result and review
 
 Video recording and upload work stopped. Recording automation was removed from the source tree so the repository remains focused on the actual application. The reviewed 2:15 narration and click path remain in `DEMO_SCRIPT.md` for the student’s own recording.
+
+## Session 8 — Clean-checkout release rehearsal
+
+### Agent release prompt
+
+Clone the public repository into a new directory, remove any inherited database URL, and run the documented install, SQLite setup, verification, static checks, automated tests, production build, and browser suite without relying on the working copy.
+
+### Results, failure, and fix
+
+The first untouched checkout revealed a Windows-specific Prisma behavior: `migrate deploy` did not create a missing SQLite file and returned a schema-engine error. A cross-platform preparation script now creates the configured SQLite directory and empty file before migration. A second untouched public clone with no `.env` then created and seeded the database successfully, reported 20 flights and 10 routes, passed lint and TypeScript, passed 13 Vitest tests and 3 Chromium scenarios, and completed the optimized build.

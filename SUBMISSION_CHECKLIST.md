@@ -17,7 +17,7 @@
 - [x] Four polished release screenshots
 - [x] Production build and browser test evidence
 - [ ] YouTube demo link shorter than 2:30 — student handoff item
-- [ ] Clean-clone rehearsal after final push
+- [x] Clean-clone rehearsal after final implementation push
 
 ## Privacy gate
 
